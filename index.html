@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="my">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#087a12">
+<title>Green Account Demo</title>
+<style>
+*{box-sizing:border-box}body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Noto Sans Myanmar",Arial,sans-serif;background:#064d09;color:#fff}
+.app{max-width:520px;margin:auto;min-height:100vh;background:linear-gradient(#087b12,#063f08);padding-bottom:75px}
+header{height:62px;display:flex;align-items:center;justify-content:space-between;padding:0 15px;background:#087b12;position:sticky;top:0;z-index:5}
+header h1{font-size:21px;margin:0;font-weight:600}.refresh{font-size:27px}
+.login{margin:14px;background:#fff;border-radius:16px;padding:18px;color:#174b19;display:none}
+.login input{width:100%;padding:13px;border:1px solid #ccc;border-radius:10px;margin:7px 0;font-size:16px}
+.btn{border:0;border-radius:10px;padding:12px 18px;background:#0b7c15;color:white;font-size:16px;font-weight:600;width:100%}
+.banner{margin:10px 14px;padding:14px;border-radius:12px;background:#053e08;text-align:center;font-size:14px}
+.balance{margin:10px 14px;padding:15px;background:#fff;color:#164d18;border-radius:14px;display:flex;justify-content:space-between}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;padding:10px 14px}
+.card{background:#f7f7f7;color:#166019;border-radius:14px;padding:9px 5px;text-align:center;box-shadow:0 2px 5px #0005;cursor:pointer}
+.icon{height:75px;border-radius:11px;display:flex;align-items:center;justify-content:center;font-size:34px;font-weight:800;background:linear-gradient(#fff,#dfe5df);color:#137018}
+.card small{display:block;margin-top:7px;font-size:12px;font-weight:700}
+.panel{margin:14px;background:#fff;color:#173f19;border-radius:14px;padding:16px;display:none}
+.panel h2{margin:0 0 10px;font-size:18px}.row{padding:11px 0;border-bottom:1px solid #ddd;display:flex;justify-content:space-between}
+nav{position:fixed;bottom:0;left:0;right:0;max-width:520px;margin:auto;height:68px;background:#075b0b;display:flex;justify-content:space-around;align-items:center;border-top:1px solid #59a65d}
+nav button{background:none;border:0;color:#b9d9b9;font-size:12px}.navico{font-size:23px;display:block}
+.notice{font-size:12px;opacity:.85;text-align:center;padding:0 18px 12px}
+</style>
+</head>
+<body>
+<div class="app">
+<header><h1>Green Account</h1><span class="refresh" onclick="location.reload()">↻</span></header>
+
+<div class="login" id="login">
+<h2>အကောင့်ဝင်ရန်</h2>
+<input id="user" placeholder="Username">
+<input id="pass" type="password" placeholder="Password">
+<button class="btn" onclick="login()">Login</button>
+</div>
+
+<div id="home">
+<div class="banner">Demo Account • စမ်းသပ်အသုံးပြုရန်</div>
+<div class="balance"><span>လက်ကျန်</span><b id="bal">100,000 Ks</b></div>
+
+<div class="grid">
+<div class="card" onclick="show('2D')"><div class="icon">2D</div><small>2D</small></div>
+<div class="card" onclick="show('3D')"><div class="icon">3D</div><small>3D</small></div>
+<div class="card" onclick="show('GAME')"><div class="icon">🎮</div><small>GAME</small></div>
+<div class="card" onclick="show('HISTORY')"><div class="icon">📋</div><small>HISTORY</small></div>
+<div class="card" onclick="show('NOTICE')"><div class="icon">🔔</div><small>NOTICE</small></div>
+<div class="card" onclick="show('PROFILE')"><div class="icon">👤</div><small>PROFILE</small></div>
+</div>
+<p class="notice">ဤ version သည် UI/Demo account ဖြစ်ပြီး ငွေလောင်းခြင်း၊ ငွေသွင်း/ငွေထုတ် မပါဝင်ပါ။</p>
+</div>
+
+<div class="panel" id="panel"></div>
+<nav>
+<button onclick="show('HOME')"><span class="navico">🎮</span>ပင်မ</button>
+<button onclick="show('HISTORY')"><span class="navico">◷</span>မှတ်တမ်း</button>
+<button onclick="show('PROFILE')"><span class="navico">♙</span>အကောင့်</button>
+</nav>
+</div>
+
+<script>
+const panel=document.getElementById('panel');
+function show(x){
+ document.getElementById('home').style.display=x==='HOME'?'block':'none';
+ if(x==='HOME'){panel.style.display='none';return}
+ panel.style.display='block';
+ const data={
+ '2D':['2D ရလဒ်မှတ်တမ်း','09:30 — --','12:01 — --','16:30 — --'],
+ '3D':['3D ရလဒ်မှတ်တမ်း','မနက် — --','နေ့လယ် — --','ညနေ — --'],
+ 'GAME':['Game Menu','Demo Game A','Demo Game B','Demo Game C'],
+ 'HISTORY':['မှတ်တမ်း','ယနေ့ — Demo activity','မနေ့ — Demo activity'],
+ 'NOTICE':['အသိပေးချက်','System demo mode ဖြစ်သည်။'],
+ 'PROFILE':['အကောင့်','Username: demo_user','Balance: 100,000 Ks']
+ };
+ const d=data[x]||data.HOME;
+ panel.innerHTML='<h2>'+d[0]+'</h2>'+d.slice(1).map(v=>'<div class="row"><span>'+v+'</span><span>›</span></div>').join('');
+}
+function login(){
+ const u=document.getElementById('user').value.trim();
+ if(!u){alert('Username ထည့်ပါ');return}
+ document.getElementById('login').style.display='none';
+ document.getElementById('home').style.display='block';
+}
+document.getElementById('login').style.display='block';
+document.getElementById('home').style.display='none';
+</script>
+</body>
+</html>
